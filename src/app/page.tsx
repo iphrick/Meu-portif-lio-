@@ -98,7 +98,6 @@ export default function Home() {
   
   // Terminal Logic
   type TerminalLine = { id: number; command: string; output: React.ReactNode };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getInitialTerminalHistory = React.useCallback((): TerminalLine[] => [
     { id: 1, command: 'whoami', output: <div className="mt-1 text-white">Pedro Henrique</div> },
     { id: 2, command: 'stack', output: <div className="mt-1 flex flex-col gap-1 text-white"><span>&gt; Software Engineering</span><span>&gt; Data Engineering</span><span>&gt; DevOps</span><span>&gt; Artificial Intelligence</span></div> },
