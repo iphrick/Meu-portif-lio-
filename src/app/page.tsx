@@ -154,7 +154,7 @@ export default function Home() {
     } else if (cmd === 'whoami') {
       output = <div className="mt-1 text-white">{dict.hero.visitor}</div>;
     } else if (cmd === 'stack' || cmd === 'contact') {
-      output = getInitialTerminalHistory(dict).find(h => h.command === cmd)?.output;
+      output = getInitialTerminalHistory().find(h => h.command === cmd)?.output;
     } else {
       output = <div className="mt-1 text-red-400">{dict.contact.cmdNot}: {cmd}. {dict.contact.typeHelp}</div>;
     }
