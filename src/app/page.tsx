@@ -17,6 +17,7 @@ import { t, Language, getProjectsDetails } from "@/lib/i18n";
 
 const playClickSound = () => {
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
     const oscillator = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
@@ -33,7 +34,7 @@ const playClickSound = () => {
     
     oscillator.start();
     oscillator.stop(audioCtx.currentTime + 0.1);
-  } catch (e) {
+  } catch {
     // Ignore audio context errors
   }
 };
@@ -97,7 +98,8 @@ export default function Home() {
   
   // Terminal Logic
   type TerminalLine = { id: number; command: string; output: React.ReactNode };
-  const getInitialTerminalHistory = (d: typeof dict): TerminalLine[] => [
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const getInitialTerminalHistory = React.useCallback((): TerminalLine[] => [
     { id: 1, command: 'whoami', output: <div className="mt-1 text-white">Pedro Henrique</div> },
     { id: 2, command: 'stack', output: <div className="mt-1 flex flex-col gap-1 text-white"><span>&gt; Software Engineering</span><span>&gt; Data Engineering</span><span>&gt; DevOps</span><span>&gt; Artificial Intelligence</span></div> },
     { id: 3, command: 'contact', output: (
@@ -108,7 +110,7 @@ export default function Home() {
         </div>
       )
     }
-  ];
+  ], []);
 
   const [terminalHistory, setTerminalHistory] = useState<TerminalLine[]>([]);
   const [terminalInput, setTerminalInput] = useState("");
@@ -116,14 +118,14 @@ export default function Home() {
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setTerminalHistory(getInitialTerminalHistory(dict));
-  }, [lang]);
+    setTerminalHistory(getInitialTerminalHistory());
+  }, [lang, getInitialTerminalHistory]);
 
   useEffect(() => {
-    if (terminalHistory.length > getInitialTerminalHistory(dict).length) {
+    if (terminalHistory.length > getInitialTerminalHistory().length) {
       terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [terminalHistory, dict]);
+  }, [terminalHistory, getInitialTerminalHistory]);
 
   const handleTerminalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
